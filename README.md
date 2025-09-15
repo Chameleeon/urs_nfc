@@ -20,3 +20,8 @@ Drajver je ubačen kao modul u defconfig fajlu kernela koji se nalazi u folderu 
 
 Za ispravno funkcionisanje PN7150 modula na DE1-SoC ploči potrebno je ispravno konfigurisati odgovarajući uređaj i prekide na FPGA GPIO kontroleru. Ovo je urađeno u fajlu *buildroot/board/de1soc_cyclone5/socfpga_cyclone5_de1_soc.dts*. Ovaj fajl je potrebno proslijediti kernelu kroz Make config, što je urađeno u defconfig fajlu za Buildroot.
 
+U DTS fajlu su definisana dva nova čvora:
+
+* gpio_altr - GPIO kontroler povezan na FPGA koji upravlja prekidima. Potrebno ga je definisati kako bi PN7150 mogao ispravno da funkcioniše.
+* pn7150 - podčvor i2c2 čvora koji opisuje sam PN7150 uređaj i definiše VEN i IRQ pinove na gore pomenutom kontroleru.
+

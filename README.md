@@ -8,7 +8,29 @@ Kao alat za automatizaciju procesa izgradnje svih potrebnih komponenti za pokret
 
 Korištena verzija Buildroot-a je 2024.02.
 
-Kao početna konfiguracija preporučuje se upotreba konfiguracije *buildroot/configs/de1soc_defconfig*. Nakon selektovanja ove konfiguracije potrebno je promijeniti putanju do Toolchain-a.
+Kao početna konfiguracija preporučuje se upotreba konfiguracije *buildroot/configs/de1soc_defconfig*. 
+Da bi se ova konfiguracija upotrijebila potrebno je prvo klonirati Buildroot repozitorijum i prebaciti se na odgovarajuću verziju:
+```bash
+git clone https://gitlab.com/buildroot.org/buildroot.git
+cd buildroot
+git checkout 2024.02
+```
+Zatim je *de1soc_defconfig* fajl potrebno prekopirati u *configs* folder unutar kloniranog direktorijuma.
+Konfiguraciju tada možemo selektovati komandom
+```bash
+make de1soc_defconfig
+```
+Takođe je potrebno prekopirati cijeli *board* folder u novi klonirani direktorijum.
+```bash
+cp -r /path/to/this/repo/board .
+```
+Nakon selektovanja ove konfiguracije potrebno je promijeniti putanju do Toolchain-a. Po potrebi se mogu promijeniti i ostali parametri. Nakon čuvanja konfiguracije kompletna kompresovana slika se može generisati komandom ```make``` u buildroot folderu.
+
+## U-Boot
+
+Kao Bootloader koji učitava kernel i root filesystem korišten je **U-Boot**, verzija 2024.01.
+Učitavanje slike jezgra i filesystem-a se vrši sa SD kartice na odgovarajuće memorijske adrese.
+Proces učitavanja i pokretanja je automatizovan upotrebom fajla *buildroot/board/terasic/de1soc_cyclone5/boot-env.txt* koji podešava U-Boot okruženje za pravilno pokretanje. 
 
 ## Linux kernel
 

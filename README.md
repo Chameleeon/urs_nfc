@@ -10,6 +10,17 @@ Korištena verzija Buildroot-a je 2024.02.
 
 Kao početna konfiguracija preporučuje se upotreba konfiguracije *buildroot/configs/de1soc_defconfig*. Nakon selektovanja ove konfiguracije potrebno je promijeniti putanju do Toolchain-a.
 
+## Linux kernel
+
+Verzija Linux jezgra koje je korišteno je *socfpga-6.1.38-lts* dostupna na (ovom)[https://github.com/altera-opensource/linux-socfpga] linku.
+Kao polazna konfiguracija korišten je *socfpga_defconfig*.
+Izmjene koje je potrebno napraviti za ispravno funkcionisanje su:
+* parametar `CONFIG_LOCALVERSION` postaviti na -etfbl-lab (ili željenu vrijednost) u **General setup**
+* isključiti opciju **Automatically append version information to the version string**
+* kod kategorije **Boot options** postaviti opciju **Default kernel command string** na *console* i zatim na **Kernel command line type** postaviti *Use bootloader kernel arguments if available*.
+
+Takođe je potrebno u **Drivers** -> **Misc devices** NXP drajver ubaciti kao modul, što je detaljnije opisano u sljedećem dijelu teksta.
+
 ## Drajver
 
 Prije kompajliranja kernela potrebno je ubaciti drajver za PN7150 koji se nalazi u folderu *nxp-pn5xx*. Drajver je modifikovan tako da su popravljene određene kompajlerske greške.

@@ -34,7 +34,7 @@ Proces učitavanja i pokretanja je automatizovan upotrebom fajla *buildroot/boar
 
 ## Linux kernel
 
-Verzija Linux jezgra koje je korišteno je *socfpga-6.1.38-lts* dostupna na (ovom)[https://github.com/altera-opensource/linux-socfpga] linku.
+Verzija Linux jezgra koje je korišteno je *socfpga-6.1.38-lts* dostupna na [ovom](https://github.com/altera-opensource/linux-socfpga) linku.
 Kao polazna konfiguracija korišten je *socfpga_defconfig*.
 Izmjene koje je potrebno napraviti za ispravno funkcionisanje su:
 * parametar `CONFIG_LOCALVERSION` postaviti na -etfbl-lab (ili željenu vrijednost) u **General setup**

@@ -58,3 +58,4 @@ U DTS fajlu su definisana dva nova čvora:
 * gpio_altr - GPIO kontroler povezan na FPGA koji upravlja prekidima. Potrebno ga je definisati kako bi PN7150 mogao ispravno da funkcioniše.
 * pn7150 - podčvor i2c2 čvora koji opisuje sam PN7150 uređaj i definiše VEN i IRQ pinove na gore pomenutom kontroleru.
 
+##

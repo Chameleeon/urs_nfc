@@ -89,9 +89,17 @@ pidfs,          {PID_FS_MAGIC}
 
 ## Drajver
 
-Prije kompajliranja kernela potrebno je ubaciti drajver za PN7150 koji se nalazi u folderu *nxp-pn5xx*. Drajver je modifikovan tako da su popravljene određene kompajlerske greške.
+Prije kompajliranja kernela potrebno je ubaciti drajver za PN7150 koji se nalazi u folderu *nxp-pn5xx*.
 Uputstvo za ubacivanje drajvera je dostupno na [ovom](https://www.nxp.com/docs/en/application-note/AN11697.pdf) linku.
 Drajver je ubačen kao modul u defconfig fajlu kernela koji se nalazi u folderu *buildroot/board/terasic/de1soc_cyclone5/de1_soc_defconfig*
+
+Drajver je modifikovan tako da su popravljene određene kompajlerske greške i tako dostupan unutar ovog repozirorijuma u folderu **nxp-pn5xx**.
+Modifikacije koje su napravljene su sljedeće:
+- pozivi funkcija **pr_warning()** promijenjeni u **pr_warn()**
+- tip funkcije **pn54x_remove()** promijenjen iz **int** u **void**
+- uklonjena linija ```return 0;``` iz funkcije **pn54x_remove()**
+
+Prije ovih izmjena, kompajliranje drajvera je dovdilo do kompajlerske greške.
 
 ## Device Tree
 
@@ -145,6 +153,17 @@ možemo dobiti detaljan ispis događaja tokom konfiguracije PN7150 modula za *Po
 
 Međutim, prinošenje NFC taga ne donosi nikakvu promjenu na IRQ pinu, što znači da se NFC tag nikada ne detektuje.
 Razlog za ovo može biti potencijalni hardverski problem sa RF antenom (prekid u namotaju ili loš kontakt) ili problem sa drajverom.
+
+Prvi pokušaj je bio sa prekidima na obje ivice. Za to je bilo potrebno modifikovati sljedeću liniju u drajveru:
+```C
+ret = request_irq(client->irq, pn54x_dev_irq_handler, IRQF_TRIGGER_HIGH, client->name, pn54x_dev);
+```
+tako da izgleda ovako:
+```C
+ret = request_irq(client->irq, pn54x_dev_irq_handler, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING, client->name, pn54x_dev);
+```
+Međutim, ovo je dovodilo do lažnih prekida.
+Sljedeći pokušaj je bio sa prekidima tipa **LEVEL HIGH**, što je riješilo problem lažnih prekida koji su se javljali na opadajuću ivicu, ali nije riješilo problem detektovanja NFC taga.
 
 Ono što je sigurno jeste da prekidi rade ispravno tokom inicijlizacije modula, jer *read* funkcija u drajveru zahtijeva da IRQ pin bude **HIGH** prije nego što pristupi čitanju. Ukoliko je IRQ pin na niskom logičkom nivou kada se zahtijeva čitanje, drajver čeka da se promijeni stanje IRQ pina prije nego što počne da čita podatke.
 S obzirom na to da Demo aplikacija šalje konfiguracione NCI poruke modulu i čita njegove odgovore na njih, možemo zaključiti da kada PN7150 modul dobije konfiguracionu poruku, šalje odgovor na nju i podiže IRQ pin na **HIGH** logički nivo.

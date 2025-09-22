@@ -151,10 +151,9 @@ PROTOCOL_TRACE_LEVEL=0xFF
 
 možemo dobiti detaljan ispis događaja tokom konfiguracije PN7150 modula za *Polling* režim, što nam daje informaciju o tome da je modul uspješno konfigurisan za **RF_DISCOVERY** odnosno da čeka da mu se prinese NFC tag.
 
-Međutim, prinošenje NFC taga ne donosi nikakvu promjenu na IRQ pinu, što znači da se NFC tag nikada ne detektuje.
-Razlog za ovo može biti potencijalni hardverski problem sa RF antenom (prekid u namotaju ili loš kontakt) ili problem sa drajverom.
+Međutim, prinošenje NFC taga nije donosilo nikakvu promjenu na IRQ pinu, što znači da se NFC tag nikada ne detektuje.
 
-Prvi pokušaj je bio sa prekidima na obje ivice. Za to je bilo potrebno modifikovati sljedeću liniju u drajveru:
+Prvi pokušaj rjeŠavanja ovog problema je bio sa prekidima na obje ivice. Za to je bilo potrebno modifikovati sljedeću liniju u drajveru:
 ```C
 ret = request_irq(client->irq, pn54x_dev_irq_handler, IRQF_TRIGGER_HIGH, client->name, pn54x_dev);
 ```
@@ -165,7 +164,7 @@ ret = request_irq(client->irq, pn54x_dev_irq_handler, IRQF_TRIGGER_RISING | IRQF
 Međutim, ovo je dovodilo do lažnih prekida.
 Sljedeći pokušaj je bio sa prekidima tipa **LEVEL HIGH**, što je riješilo problem lažnih prekida koji su se javljali na opadajuću ivicu, ali nije riješilo problem detektovanja NFC taga.
 
-Ono što je sigurno jeste da prekidi rade ispravno tokom inicijlizacije modula, jer *read* funkcija u drajveru zahtijeva da IRQ pin bude **HIGH** prije nego što pristupi čitanju. Ukoliko je IRQ pin na niskom logičkom nivou kada se zahtijeva čitanje, drajver čeka da se promijeni stanje IRQ pina prije nego što počne da čita podatke.
-S obzirom na to da Demo aplikacija šalje konfiguracione NCI poruke modulu i čita njegove odgovore na njih, možemo zaključiti da kada PN7150 modul dobije konfiguracionu poruku, šalje odgovor na nju i podiže IRQ pin na **HIGH** logički nivo.
+Za ispravno funkcionisanje senzora bilo je potrebno dovesti 5V na PN7150 modul radi napajanja antene. Nakon dovođenja 5V senzor funkcioniŠe oČekivano i ukoliko pokrenemo *nfcDemoApp* i zatim prislonimo NFC tag, dobijemo izlaze sa sljedeće slike, s tim da su kao tagovi za testiranje koriŠtene zdravstvena kartica koja je tipa Mifare Classic i liČna karta proizvođaČa Fujitsu (s toga i ispis **Not a Mifare Card**), respektivno.
 
-Za otkrivanje stvarnog problema potrebno je uraditi detaljniju analizu izvornog koda drajvera jer na prvi pogled nema značajnu grešku i čitanje očigledno radi ispravno, kao i detaljnije ispitivanje RF antene.
+<img width="1157" height="1072" alt="image" src="https://github.com/user-attachments/assets/d5cd57cc-cb32-4707-b778-3cc80344c02a" />
+

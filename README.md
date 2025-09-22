@@ -164,7 +164,20 @@ ret = request_irq(client->irq, pn54x_dev_irq_handler, IRQF_TRIGGER_RISING | IRQF
 Međutim, ovo je dovodilo do lažnih prekida.
 Sljedeći pokušaj je bio sa prekidima tipa **LEVEL HIGH**, što je riješilo problem lažnih prekida koji su se javljali na opadajuću ivicu, ali nije riješilo problem detektovanja NFC taga.
 
-Za ispravno funkcionisanje senzora bilo je potrebno dovesti 5V na PN7150 modul radi napajanja antene. Nakon dovođenja 5V senzor funkcioniŠe oČekivano i ukoliko pokrenemo *nfcDemoApp* i zatim prislonimo NFC tag, dobijemo izlaze sa sljedeće slike, s tim da su kao tagovi za testiranje koriŠtene zdravstvena kartica koja je tipa Mifare Classic i liČna karta proizvođaČa Fujitsu (s toga i ispis **Not a Mifare Card**), respektivno.
+Za ispravno funkcionisanje senzora bilo je potrebno dovesti 5V na PN7150 modul radi napajanja antene. Nakon dovođenja 5V senzor funkcioniŠe oČekivano i ukoliko pokrenemo *nfcDemoApp* u **polling** režimu i zatim prislonimo NFC tag, dobijemo izlaze sa sljedeće slike, s tim da su kao tagovi za testiranje koriŠtene zdravstvena kartica koja je tipa Mifare Classic i liČna karta proizvođaČa Fujitsu (s toga i ispis **Not a Mifare Card**), respektivno.
 
 <img width="1157" height="1072" alt="image" src="https://github.com/user-attachments/assets/d5cd57cc-cb32-4707-b778-3cc80344c02a" />
 
+Ovime je uspiješno ostvarena komunikacija između DE1-SoC platforme i PN7150 modula i implementirana osnovna funkcionalnost modula. 
+
+### NAPOMENA
+
+**nfcDemoApp** nudi joŠ tri režima rada pored **Polling** režima:
+- write
+- share
+- push
+
+ViŠe detalja o ovim režimima rada možemo dobiti sa 
+```bash
+nfcDemoApp -h
+```

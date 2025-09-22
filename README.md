@@ -165,8 +165,8 @@ Međutim, ovo je dovodilo do lažnih prekida.
 Sljedeći pokušaj je bio sa prekidima tipa **LEVEL HIGH**, što je riješilo problem lažnih prekida koji su se javljali na opadajuću ivicu, ali nije riješilo problem detektovanja NFC taga.
 
 Za ispravno funkcionisanje senzora bilo je potrebno dovesti 5V na PN7150 modul radi napajanja antene. Nakon dovođenja 5V senzor funkcioniŠe oČekivano i ukoliko pokrenemo *nfcDemoApp* u **polling** režimu i zatim prislonimo NFC tag, dobijemo izlaze sa sljedeće slike, s tim da su kao tagovi za testiranje koriŠtene zdravstvena kartica koja je tipa Mifare Classic i liČna karta proizvođaČa Fujitsu (s toga i ispis **Not a Mifare Card**), respektivno.
+<img width="1102" height="946" alt="image" src="https://github.com/user-attachments/assets/17048adc-8e8a-4aa8-9a5e-b1af51a189df" />
 
-<img width="1157" height="1072" alt="image" src="https://github.com/user-attachments/assets/d5cd57cc-cb32-4707-b778-3cc80344c02a" />
 
 Ovime je uspiješno ostvarena komunikacija između DE1-SoC platforme i PN7150 modula i implementirana osnovna funkcionalnost modula. 
 
